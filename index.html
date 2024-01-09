@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>My Web Page</title>
+</head>
+<body>
+    <h1>Piece of the Pie Rewards</h1>
+    <fillButton><input id="fillButton" type="button" value="Add Piece"></fillButton>
+    <br>
+    <pieProgress><progress id="pieProgress" value="0" max="6"></progress></pieProgress>
+    <hr>
+    <h2 id="totalFinishedText">Total Pieces: 0</h2>
+    <redeamButton><input id="redeamButton" type="button" value="Redeem Reward" onclick="redeamReward()"></redeamButton>
+    <hr>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            function fillBar() {
+                var newTotal = pieProgress.value + 1;
+                if (newTotal >= 6) {
+                    newTotal = 0;
+                    totalFinished++;
+                    totalFinishedText.innerHTML = "Total Pieces: " + totalFinished;
+                    localStorage.setItem("totalFinished", totalFinished);
+                }
+                pieProgress.value = newTotal;
+                pieProgressTotal = newTotal
+                localStorage.setItem("pieProgressTotal", newTotal);
+            }
+
+            function redeamReward() {
+                if (totalFinished >= 10) {
+                    totalFinished -= 10;
+                    totalFinishedText.innerHTML = "Total Pieces: " + totalFinished;
+                    localStorage.setItem("totalFinished", totalFinished);
+                    alert("You have redeemed a free pie!");
+                } else {
+                    alert("You do not have enough pieces to redeem a free pie.");
+                }
+            }
+            
+            var pieProgress = document.getElementById("pieProgress");
+            var totalFinishedText = document.getElementById("totalFinishedText");
+            var fillButton = document.getElementById("fillButton");
+            var totalFinished = localStorage.getItem("totalFinished");
+            if (totalFinished === null) {
+                totalFinished = 0;
+                totalFinishedText.innerHTML = "Total Pieces: 0";
+            } else {
+                totalFinished = parseInt(totalFinished);
+                totalFinishedText.innerHTML = "Total Pieces: " + totalFinished;
+            }
+            var pieProgressTotal = localStorage.getItem("pieProgress");
+            if (pieProgressTotal === null) {
+                pieProgressTotal = 0;
+            } else {
+                pieProgressTotal = parseInt(pieProgressTotal);
+                pieProgress.value = pieProgressTotal;
+            }
+
+            fillButton.onclick = fillBar;
+        });
+    </script>
+</body>
+</html>
