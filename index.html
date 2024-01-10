@@ -31,19 +31,28 @@
             }
 
             function redeamReward() {
-                if (totalFinished >= 10) {
-                    totalFinished -= 10;
+                if (totalFinished > 0) {
+                    const request = new XMLHttpRequest();
+                    request.open("POST", webhook);
+
+                    request.setRequestHeader('Content-type', 'application/json');
+
+                    const params = {
+                        username: "Piece of the Pie Rewards",
+                        avatar_url: "",
+                        content: "A piece of the pie reward has been redeemed!"
+                    }
+                    request.send(JSON.stringify(params));
+                    totalFinished--;
                     totalFinishedText.innerHTML = "Total Pieces: " + totalFinished;
-                    localStorage.setItem("totalFinished", totalFinished);
-                    alert("You have redeemed a free pie!");
-                } else {
-                    alert("You do not have enough pieces to redeem a free pie.");
                 }
             }
             
+            const webhook = "https://discord.com/api/webhooks/1134945188226285719/o2Fpm9Af8YQHiQowiQjFJaSyuBQgHYveWWo22pB10cCLU3_2n564uRfxqRQ2A2MrqFzJ";
             var pieProgress = document.getElementById("pieProgress");
             var totalFinishedText = document.getElementById("totalFinishedText");
             var fillButton = document.getElementById("fillButton");
+            var redeamButton = document.getElementById("redeamButton");
             var totalFinished = localStorage.getItem("totalFinished");
             if (totalFinished === null) {
                 totalFinished = 0;
@@ -61,7 +70,9 @@
             }
 
             fillButton.onclick = fillBar;
+            redeamButton.onclick = redeamReward;
         });
+
     </script>
 </body>
 </html>
